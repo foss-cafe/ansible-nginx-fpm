@@ -3,7 +3,7 @@
 
 - name: apply common configuration to all nodes
   hosts: all
-  remote_user: vagrant
+  remote_user: ubuntu
   become: yes
   become_user: root
 
@@ -11,3 +11,4 @@
     - common
     - php
     - nginx
+    - for-pdf-parser
