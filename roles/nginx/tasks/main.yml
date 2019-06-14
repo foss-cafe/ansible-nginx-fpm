@@ -1,0 +1,22 @@
+- name: Install a list of packages for nginx
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - nginx
+  notify: restart nginx
+- name: Ansible delete file example
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy the nginx conf file
+  copy:
+    src: app.conf
+    dest: /etc/nginx/conf.d
+    mode: 0755
+  notify: restart nginx
+- name: Enable service nginx, and not touch the state
+  service:
+    name: nginx
+    enabled: yes

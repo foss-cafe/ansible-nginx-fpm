@@ -1,0 +1,47 @@
+# Add specified repository into sources list using specified filename.
+# On Ubuntu target:
+- apt_repository:
+    repo: ppa:ondrej/php
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+
+- name: Install a list of packages for php
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - "{{ php }}={{ php_version }}" 
+    - "{{ php }}-cli={{ php_version }}" 
+    - "{{ php }}-common" 
+    - "{{ php }}-json={{ php_version }}" 
+    - "{{ php }}-opcache={{ php_version }}"
+    - "{{ php }}-mysql={{ php_version }}"
+    - "{{ php }}-mbstring={{ php_version }}"
+    - "{{ php }}-mcrypt={{ php_version }}"
+    - "{{ php }}-zip={{ php_version }}"
+    - "{{ php }}-fpm={{ php_version }}"
+    - "{{ php }}-gd={{ php_version }}"
+    - "{{ php }}-fpm={{ php_version }}" 
+    - "{{ php }}-zip={{ php_version }}"
+    - "{{ php }}-mysql={{ php_version }}"
+    - "{{ php }}-mbstring={{ php_version }}"
+    - "{{ php }}-mcrypt={{ php_version }}"
+  notify: restart phpfpm
+
+- name: ensure php7.1-fpm is running
+  service:
+    name: php7.1-fpm
+    state: started
+
+- name: Copy the www conf file
+  copy:
+    src: www.conf
+    dest: /etc/php/7.1/fpm/pool.d
+    mode: 0755
+  notify: restart phpfpm
+- name: Enable service php-fpm, and not touch the state
+  service:
+    name: php7.1-fpm
+    enabled: yes
+

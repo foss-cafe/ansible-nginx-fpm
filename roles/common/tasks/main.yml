@@ -1,0 +1,15 @@
+#Install all common packages that are needed for all projects 
+- name : install aptititude
+  apt: 
+    name: aptitude
+- name: Update all packages to the latest version
+  apt:
+    upgrade: yes
+- name: Install a list of packages
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - software-properties-common
+    - wget
+    - curl
